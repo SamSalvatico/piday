@@ -97,7 +97,7 @@ def query():
     return jsonify(output)
 
 
-@app.route('/query', methods=['GET'])
+@app.route('/query_get', methods=['GET'])
 def query_get():
     print("Query Request")
     input_data = request.args
