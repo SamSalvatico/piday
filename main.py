@@ -98,7 +98,7 @@ def query():
 
 
 @app.route('/query', methods=['GET'])
-def query():
+def query_get():
     print("Query Request")
     input_data = request.args
     print(input_data)
