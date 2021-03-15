@@ -91,7 +91,7 @@ def query():
     output = {
         "query": query,
         "lang": lang,
-        "results": results["data"],
+        "data": results["data"],
         "sql_query": results["sql_query"]
     }
     return jsonify(output)
