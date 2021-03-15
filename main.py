@@ -97,5 +97,32 @@ def query():
     return jsonify(output)
 
 
+@app.route('/query', methods=['GET'])
+def query():
+    print("Query Request")
+    input_data = request.args
+    print(input_data)
+    query = input_data["query"].strip()
+    lang = input_data["lang"].strip()
+
+    global token
+    results = make_query(query=query,
+                         lang=lang,
+                         token=token["access_token"])
+
+    results = prettify_data(result=results)
+
+    if len(results) > 0:
+        print(results)
+
+    output = {
+        "query": query,
+        "lang": lang,
+        "data": results["data"],
+        "sql_query": results["sql_query"]
+    }
+    return jsonify(output)
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
