@@ -19,7 +19,7 @@ def get_token(username, password):
                  }
                  )
     print(res.text)
-    return json.loads(res.text)
+    return res.json()
 
 
 def switch_workspace(token):
@@ -35,10 +35,11 @@ def switch_workspace(token):
     return res.text
 
 
-def make_query(query, lang):
-    res = r.post(WORKSPACE_URL,
+def make_query(query, lang, token):
+    res = r.post(QUERY_URL,
                  json={
-                     "nl": "Total cases by county", "language": "en"
+                     "nl": query,
+                     "language": lang
                  },
                  headers={
                      "Content-Type": "application/json",
@@ -46,10 +47,27 @@ def make_query(query, lang):
                  }
                  )
 
-    return res.text
+    return res.json()
 
 
+def prettify_data(data):
+    data = result["data"]
 
-token = get_token(username="samirsalman1997@gmail.com", password="Askdatahackathon")
-switch_workspace(token=str(token["access_token"]))
-print(make_query("", ""))
+    results = []
+
+    for el in data:
+        results.append(el["cells"])
+    return results
+
+
+token = get_token(username="samirsalman1997@gmail.com",
+                  password="Askdatahackathon")
+
+switch_workspace(token=token["access_token"])
+result = make_query(query="Total cases today", lang="en", token=token["access_token"])
+
+result = prettify_data(result)
+
+if len(result) > 0:
+    print(result[0])
+
